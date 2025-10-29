@@ -1,19 +1,36 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@2.1.1
+
 jobs:
   build-and-test:
     machine:
-      image: ubuntu-2204:current
+      image: ubuntu-2204:current  # Usa una máquina virtual con Docker preinstalado
     steps:
       - checkout
+
       - run:
-          name: Set up Python
+          name: Set up Python environment
           command: |
             python3 -m venv venv
             source venv/bin/activate
             pip install -r requirements.txt
-            pytest
+
       - run:
-          name: Build and Push Docker
+          name: Run tests
+          command: |
+            source venv/bin/activate
+            pytest
+
+      - run:
+          name: Build and Push Docker image
           command: |
             docker build -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
             docker push $DOCKER_LOGIN/$IMAGE_NAME:$TAG
+
+workflows:
+  sample:
+    jobs:
+      - build-and-test
