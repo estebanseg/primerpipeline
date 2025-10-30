@@ -49,3 +49,10 @@ jobs:
           command: |
             echo "Iniciando la aplicación..."
             npm start
+
+# 🔹 Definimos el workflow para ejecutar el job
+workflows:
+  version: 2
+  ci-cd:
+    jobs:
+      - build-and-push
