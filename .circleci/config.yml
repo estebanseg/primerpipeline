@@ -43,12 +43,12 @@ jobs:
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
             docker push $DOCKER_LOGIN/$IMAGE_NAME:$TAG
 
-      # Ejecutar la aplicación directamente en CircleCI
+      # Ejecutar la aplicación directamente en CircleCI usando el script "start"
       - run:
           name: Run application
           command: |
             echo "Iniciando la aplicación..."
-            node index.js  # Cambia index.js por tu archivo principal
+            npm start  # Esto ejecuta app.js según tu package.json
 
 # 🔹 Definimos el workflow para ejecutar el job
 workflows:
