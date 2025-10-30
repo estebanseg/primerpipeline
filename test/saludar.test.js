@@ -1,4 +1,4 @@
-const { saludo1, saludo2, saludo3, saludar } = require('../app');
+const { saludo1, saludo2, saludo3, saludar } = require('../saludar');
 
 test('saludo1 retorna Hola', () => {
   expect(saludo1()).toBe("Hola");
