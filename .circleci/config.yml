@@ -48,9 +48,9 @@ jobs:
           name: Run application
           command: |
             echo "Iniciando la aplicación..."
-            npm start  # Esto ejecuta app.js según tu package.json
+            npm start  # Esto ejecuta saludar.js según tu package.json
 
-# 🔹 Definimos el workflow para ejecutar el job
+# 🔹 Workflow
 workflows:
   version: 2
   ci-cd:
