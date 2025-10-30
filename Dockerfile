@@ -1,7 +1,20 @@
-FROM alpine:3.12
+# Imagen base de Node.js (más ligera que instalar Node en Alpine)
+FROM node:20-alpine
 
-WORKDIR /myfirstpipeline
+# Directorio de trabajo dentro del contenedor
+WORKDIR /app
 
-ADD . /myfirstpipeline
+# Copiar archivos de dependencias primero (para aprovechar la cache de Docker)
+COPY package*.json ./
 
-RUN apk add python3
+# Instalar dependencias
+RUN npm install --production
+
+# Copiar el resto del código
+COPY . .
+
+# Exponer el puerto (si usas un servidor, por ejemplo Express)
+EXPOSE 3000
+
+# Comando por defecto al ejecutar el contenedor
+CMD ["node", "app.js"]
