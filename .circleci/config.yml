@@ -3,8 +3,7 @@ version: 2.1
 jobs:
   build-and-push:
     docker:
-      # Imagen oficial de CircleCI con Node.js y Docker preinstalado
-      - image: cimg/node:20.11
+      - image: cimg/node:20.11  # Node.js + Docker preinstalado
 
     steps:
       - checkout
@@ -12,26 +11,22 @@ jobs:
       # Instalar dependencias
       - run:
           name: Install dependencies
-          command: |
-            npm install
+          command: npm install
 
       # Ejecutar pruebas unitarias
       - run:
           name: Run unit tests
-          command: |
-            npm run test:unit
+          command: npm run test:unit
 
       # Ejecutar pruebas de integración (si existen)
       - run:
           name: Run integration tests
-          command: |
-            npm run test:integration || echo "No integration tests found"
+          command: npm run test:integration || echo "No integration tests found"
 
       # Ejecutar Linter
       - run:
           name: Run linter
-          command: |
-            npm run lint
+          command: npm run lint
 
       # Construir imagen Docker
       - setup_remote_docker:
@@ -39,8 +34,7 @@ jobs:
 
       - run:
           name: Build Docker image
-          command: |
-            docker build -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
+          command: docker build -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
 
       # Login en Docker Hub y push de imagen
       - run:
@@ -49,7 +43,9 @@ jobs:
             echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
             docker push $DOCKER_LOGIN/$IMAGE_NAME:$TAG
 
-workflows:
-  ci-cd:
-    jobs:
-      - build-and-push
+      # Ejecutar la aplicación directamente en CircleCI
+      - run:
+          name: Run application
+          command: |
+            echo "Iniciando la aplicación..."
+            npm start
